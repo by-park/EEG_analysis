@@ -317,7 +317,7 @@ for file = 1:foldersize
     end
     
     end % iteration end
-    ttestmatrix(:,:,:) = ttestmatrix(:,:,:)/10;
+    ttestmatrix(:,:,:) = ttestmatrix(:,:,:)/3;
     
     permutationmatrix = [permutationmatrix;mean(ttestmatrix, 1)];
         
@@ -351,51 +351,51 @@ cd('C:\Users\BY\Documents\Github\PersonalProejct\EEG_analysis\codes');
 
 f1 = figure;
 cuecol = 2; % target 1
-aexample = zeros(foldersize,15);
-for timepoint=1:15
+aexample = zeros(foldersize,37); %15
+for timepoint=1:37%15
     aexample(:,timepoint) = permutationmatrix(:,cuecol,timepoint);
 end
 %stdshade(aexample, 0.5,'g');
 plot(mean(aexample, 1), 'g');
 hold on;
-plot([1 15],[0.25 0.25],'k');
-axis([1 15 0 0.35])
+plot([1 37],[0.25 0.25],'k'); %15
+axis([1 37 0 0.35])%15
 
 f2 = figure;
 cuecol = 1; % distractor
-aexample = zeros(foldersize,15);
-for timepoint=1:15
+aexample = zeros(foldersize,37); %15
+for timepoint=1:37%15
     aexample(:,timepoint) = permutationmatrix(:,cuecol,timepoint);
 end
 %stdshade(aexample, 0.5,'b');
 plot(mean(aexample, 1), 'b');
 hold on;
-plot([1 15],[0.25 0.25],'k');
-axis([1 15 0 0.35])
+plot([1 37],[0.25 0.25],'k'); %15
+axis([1 37 0 0.35]) %15
 
 f3 = figure;
 cuecol = 3; % neutral
-aexample = zeros(foldersize,15);
-for timepoint=1:15
+aexample = zeros(foldersize,37); %15
+for timepoint=1:37%15
     aexample(:,timepoint) = permutationmatrix(:,cuecol,timepoint);
 end
 %stdshade(aexample, 0.5,'r');
 plot(mean(aexample, 1), 'r');
 hold on;
-plot([1 15],[0.25 0.25],'k');
-axis([1 15 0 0.35])
+plot([1 37],[0.25 0.25],'k'); %15
+axis([1 37 0 0.35]) %15
 
 f4 = figure;
 cuecol = 4; % target2
-aexample = zeros(foldersize,15);
-for timepoint=1:15
+aexample = zeros(foldersize,37); %15
+for timepoint=1:37%15
     aexample(:,timepoint) = permutationmatrix(:,cuecol,timepoint);
 end
 %stdshade(aexample, 0.5,'y');
 plot(mean(aexample, 1), 'y');
 hold on;
-plot([1 15],[0.25 0.25],'k');
-axis([1 15 0 0.35])
+plot([1 37],[0.25 0.25],'k');%15
+axis([1 37 0 0.35])%15
 
 % save graphs
 cd(EEGloc);
