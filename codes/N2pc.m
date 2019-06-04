@@ -17,8 +17,8 @@
 AnalyName = 'N2pc';
 
 % EEG file location
-EEGloc = 'D:\EEG 파일 모음\내 실험\Ex1_n2pc_tar\뇌파데이터\pp_ica_removed\ep\'; 
-% EEGloc = 'D:\EEG 파일 모음\내 실험\Ex2_n2pc_dist\뇌파데이터\pp_ica_removed\ep\';
+% EEGloc = 'D:\EEG 파일 모음\내 실험\Ex1_n2pc_tar\뇌파데이터\pp_ica_removed\ep\'; 
+EEGloc = 'D:\EEG 파일 모음\내 실험\Ex2_n2pc_dist\뇌파데이터\pp_ica_removed\ep\';
 % EEGloc = 'D:\EEG 파일 모음\내 실험\Ex7_n2pc_tar_single\뇌파데이터\pp_ica_removed\ep\';
 
 cd(EEGloc);
@@ -66,8 +66,8 @@ nAnova = 1;
 fornnstart = [];
 
 % graph names for visualization
-graphNames = {'Distractor(blue)','Target(green)', 'Target(yellow)','Neutral(red)'};
-% graphNames = {'Target(blue)','Distractor(green)', 'Distractor(yellow)','Neutral(red)'};
+% graphNames = {'Distractor(blue)','Target(green)', 'Target(yellow)','Neutral(red)'};
+graphNames = {'Target(blue)','Distractor(green)', 'Distractor(yellow)','Neutral(red)'};
 % graphNames = {'Distractor(red)','Target(blue)', 'Target(yellow)','Neutral(green)'};
 % graphNames = {'Distractor(red)','Target(blue)', 'Target(green)','Neutral(yellow)'};
 

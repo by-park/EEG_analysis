@@ -1,9 +1,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % ERP analysis
 %
-%   -> averging EEG singal for SVM and permutation test (exp1-2 target, 1 distractor, 1 neutral)
+%   -> averging EEG singal for SVM and permutation test (exp2-1 target, 2 distractor, 1 neutral)
 %
-% created at 2019.05.23 PBY (iteration Ãß°¡!)
+% created at 2019.06.02 PBY
 % github: https://github.com/BY1994
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -125,23 +125,26 @@ for file = 1:foldersize
         fprintf('** Timepoint %d \n',timepoint)
         randind_target = randperm(size(fornnstart_comb,1));
         fornnstart2_target = [fornnstart_comb(:,:,timepoint) randind_target'];
-        fornnstart2_target2 = [fornnstart_comb(:,:,timepoint) randind_target'];
+        %fornnstart2_target2 = [fornnstart_comb(:,:,timepoint) randind_target'];
         
         randind_dist = randperm(size(fornnstart_comb,1));
         fornnstart2_dist = [fornnstart_comb(:,:,timepoint) randind_dist'];        
+        fornnstart2_dist2 = [fornnstart_comb(:,:,timepoint) randind_dist'];        
 
         randind_neutral = randperm(size(fornnstart_comb,1));
         fornnstart2_neutral = [fornnstart_comb(:,:,timepoint) randind_neutral'];        
         
         % target list: remove other cues except target cues
-%         fornnstart2_target((fornnstart2_target(:,end-2)==2) | (fornnstart2_target(:,end-2)==3) | (fornnstart2_target(:,end-2)==4),:) = [];
+         fornnstart2_target((fornnstart2_target(:,end-2)==2) | (fornnstart2_target(:,end-2)==3) | (fornnstart2_target(:,end-2)==4),:) = [];
 
-        fornnstart2_target((fornnstart2_target(:,end-2)==1) | (fornnstart2_target(:,end-2)==4)| (fornnstart2_target(:,end-2)==3),:) = [];
-        fornnstart2_target2((fornnstart2_target2(:,end-2)==1) | (fornnstart2_target2(:,end-2)==4)| (fornnstart2_target2(:,end-2)==2),:) = [];
+%        fornnstart2_target((fornnstart2_target(:,end-2)==1) | (fornnstart2_target(:,end-2)==4)| (fornnstart2_target(:,end-2)==3),:) = [];
+%        fornnstart2_target2((fornnstart2_target2(:,end-2)==1) | (fornnstart2_target2(:,end-2)==4)| (fornnstart2_target2(:,end-2)==2),:) = [];
 
         % distractor list (23)
 %         fornnstart2_dist((fornnstart2_dist(:,end-2)==1) | (fornnstart2_dist(:,end-2)==4),:) = [];
-        fornnstart2_dist((fornnstart2_dist(:,end-2)==2) | (fornnstart2_dist(:,end-2)==3)  | (fornnstart2_dist(:,end-2)==4),:) = [];
+%        fornnstart2_dist((fornnstart2_dist(:,end-2)==2) | (fornnstart2_dist(:,end-2)==3)  | (fornnstart2_dist(:,end-2)==4),:) = [];
+        fornnstart2_dist((fornnstart2_dist(:,end-2)==1) | (fornnstart2_dist(:,end-2)==3)  | (fornnstart2_dist(:,end-2)==4),:) = [];
+        fornnstart2_dist2((fornnstart2_dist2(:,end-2)==1) | (fornnstart2_dist2(:,end-2)==2)  | (fornnstart2_dist2(:,end-2)==4),:) = [];
 
         % neutral list (4)
         fornnstart2_neutral((fornnstart2_neutral(:,end-2)==1) | (fornnstart2_neutral(:,end-2)==2) | (fornnstart2_neutral(:,end-2)==3),:) = [];
@@ -167,27 +170,7 @@ for file = 1:foldersize
         newout2_target = newout(sortOrder,:);
         nanindex = isnan(newout2_target(:,1)); % delete NAN
         newout2_target(nanindex,:) = [];
-        
-        % target sorting2
-        [~,sortOrder] = sort(fornnstart2_target2(:,end),'descend');        
-        out = fornnstart2_target2(sortOrder,:);
-        newout = [];
-        for i = 1:4 % four loca
-            outind = (out(:,end-1)==i);
-            outplus = out(outind,1:end-3);
-            newout = [newout; outplus, repmat(i,sum(outind),1)];
-%             for j = 1:10:size(out,1)-9 % combine 10 trials
-%                 outind = (out(:,end-1)==i);
-%                 outplus = mean(out(outind(j:j+9),1:end-3),1);
-%                 newout = [newout; outplus, i];
-%             end
-        end
-        randind2 = randperm(size(newout,1));
-        newout = [newout randind2'];
-        [~,sortOrder] = sort(newout(:,end),'descend');
-        newout2_target2 = newout(sortOrder,:);
-        nanindex = isnan(newout2_target2(:,1)); % delete NAN
-        newout2_target2(nanindex,:) = [];        
+    
         
         % distractor sorting
         [~,sortOrder] = sort(fornnstart2_dist(:,end),'descend');        
@@ -209,6 +192,27 @@ for file = 1:foldersize
         newout2_dist = newout(sortOrder,:);
         nanindex = isnan(newout2_dist(:,1)); % delete NAN
         newout2_dist(nanindex,:) = [];
+        
+        % distractor sorting 2
+        [~,sortOrder] = sort(fornnstart2_dist2(:,end),'descend');        
+        out = fornnstart2_dist2(sortOrder,:);
+        newout = [];
+        for i = 1:4 % four loca
+            outind = (out(:,end-1)==i);
+            outplus = out(outind,1:end-3);
+            newout = [newout; outplus, repmat(i,sum(outind),1)];
+%             for j = 1:10:size(out,1)-9 % combine 10 trials
+%                 outind = (out(:,end-1)==i);
+%                 outplus = mean(out(outind(j:j+9),1:end-3),1);
+%                 newout = [newout; outplus, i];
+%             end
+        end
+        randind2 = randperm(size(newout,1));
+        newout = [newout randind2'];
+        [~,sortOrder] = sort(newout(:,end),'descend');
+        newout2_dist2 = newout(sortOrder,:);
+        nanindex = isnan(newout2_dist(:,1)); % delete NAN
+        newout2_dist2(nanindex,:) = [];
         
         % neutral sorting
         [~,sortOrder] = sort(fornnstart2_neutral(:,end),'descend');        
@@ -233,8 +237,9 @@ for file = 1:foldersize
         
         % 1/10 list for each cue
         target_ten = 1:floor(size(newout2_target,1)*1/10):size(newout2_target,1)-floor(size(newout2_target,1)*1/10)+1;
-        target_ten2 = 1:floor(size(newout2_target2,1)*1/10):size(newout2_target2,1)-floor(size(newout2_target2,1)*1/10)+1;
+        %target_ten2 = 1:floor(size(newout2_target2,1)*1/10):size(newout2_target2,1)-floor(size(newout2_target2,1)*1/10)+1;
         dist_ten = 1:floor(size(newout2_dist,1)*1/10):size(newout2_dist,1)-floor(size(newout2_dist,1)*1/10)+1;
+        dist_ten2 = 1:floor(size(newout2_dist2,1)*1/10):size(newout2_dist2,1)-floor(size(newout2_dist2,1)*1/10)+1;
         neutral_ten = 1:floor(size(newout2_neutral,1)*1/10):size(newout2_neutral,1)-floor(size(newout2_neutral,1)*1/10)+1;
         
         % cross validation 10 fold
@@ -242,30 +247,17 @@ for file = 1:foldersize
         for cross = 1:10
         fprintf('** crossvalid %d \n',crossorder)
         % target training
-        cuecol = 2;
+        cuecol = 1;
         % target1
         crossind = target_ten(cross):target_ten(cross)+floor(size(newout2_target,1)*1/10)-1;        
         TestSet = newout2_target(crossind,1:end-2);
         TestAnswer = newout2_target(crossind,end-1);
-        
-        % target2
-        crossind2 = target_ten2(cross):target_ten2(cross)+floor(size(newout2_target2,1)*1/10)-1;        
-        TestSet2 = newout2_target2(crossind2,1:end-2);
-        TestAnswer2 = newout2_target2(crossind2,end-1);
-        
+                
         % target 1 training set
         TrainingSet = newout2_target(:,1:end-2);
         GroupTrain = newout2_target(:,end-1);        
         TrainingSet(crossind,:)=[];
         GroupTrain(crossind,:)=[];
-        % target 2 training set
-        TrainingSet2 = newout2_target2(:,1:end-2);
-        GroupTrain2 = newout2_target2(:,end-1);        
-        TrainingSet2(crossind2,:)=[];
-        GroupTrain2(crossind2,:)=[];
-        % combine 2 training sets
-        TrainingSet = [TrainingSet; TrainingSet2];
-        GroupTrain = [GroupTrain; GroupTrain2];
         
         u=unique(GroupTrain);
         numClasses=length(u);
@@ -278,20 +270,9 @@ for file = 1:foldersize
         end
         % save result
         ttestmatrix(crossorder, cuecol, timepoint) = ttestmatrix(crossorder, cuecol, timepoint)+sum(result == TestAnswer)/size(result,1);
-        
-        % target2 test
-        cuecol = 4;
-        crossind = target_ten2(cross):target_ten2(cross)+floor(size(newout2_target2,1)*1/10)-1;        
-        TestSet = newout2_target2(crossind,1:end-2);
-        TestAnswer = newout2_target2(crossind,end-1);
-        result = zeros(length(TestSet(:,1)),1);   
-        for j=1:size(TestSet,1)
-            result(j,1) = predict(Mdl,TestSet(j,:));
-        end
-        ttestmatrix(crossorder, cuecol, timepoint) = ttestmatrix(crossorder, cuecol, timepoint)+sum(result == TestAnswer)/size(result,1);
-        
+                
         % distractor test
-        cuecol = 1;
+        cuecol = 2;
         crossind = dist_ten(cross):dist_ten(cross)+floor(size(newout2_dist,1)*1/10)-1;        
         TestSet = newout2_dist(crossind,1:end-2);
         TestAnswer = newout2_dist(crossind,end-1);
@@ -300,9 +281,21 @@ for file = 1:foldersize
             result(j,1) = predict(Mdl,TestSet(j,:));
         end
         ttestmatrix(crossorder, cuecol, timepoint) = ttestmatrix(crossorder, cuecol, timepoint)+sum(result == TestAnswer)/size(result,1);
+
+        % distractor2 test
+        cuecol = 3;
+        crossind = dist_ten2(cross):dist_ten2(cross)+floor(size(newout2_dist2,1)*1/10)-1;        
+        TestSet = newout2_dist2(crossind,1:end-2);
+        TestAnswer = newout2_dist2(crossind,end-1);
+        result = zeros(length(TestSet(:,1)),1);   
+        for j=1:size(TestSet,1)
+            result(j,1) = predict(Mdl,TestSet(j,:));
+        end
+        ttestmatrix(crossorder, cuecol, timepoint) = ttestmatrix(crossorder, cuecol, timepoint)+sum(result == TestAnswer)/size(result,1);
+
         
         % neutral test
-        cuecol = 3;
+        cuecol = 4;
         crossind = neutral_ten(cross):neutral_ten(cross)+floor(size(newout2_neutral,1)*1/10)-1;        
         TestSet = newout2_neutral(crossind,1:end-2);
         TestAnswer = newout2_neutral(crossind,end-1);
@@ -350,7 +343,7 @@ save([AnalyName,'\permutationmatrix'],'permutationmatrix');
 cd('C:\Users\BY\Documents\Github\PersonalProejct\EEG_analysis\codes');
 
 f1 = figure;
-cuecol = 2; % target 1
+cuecol = 1; % target 1
 aexample = zeros(foldersize,37); %15
 for timepoint=1:37%15
     aexample(:,timepoint) = permutationmatrix(:,cuecol,timepoint);
@@ -362,7 +355,7 @@ plot([1 37],[0.25 0.25],'k'); %15
 axis([1 37 0 0.35])%15
 
 f2 = figure;
-cuecol = 1; % distractor
+cuecol = 2; % distractor
 aexample = zeros(foldersize,37); %15
 for timepoint=1:37%15
     aexample(:,timepoint) = permutationmatrix(:,cuecol,timepoint);
@@ -374,7 +367,7 @@ plot([1 37],[0.25 0.25],'k'); %15
 axis([1 37 0 0.35]) %15
 
 f3 = figure;
-cuecol = 3; % neutral
+cuecol = 4; % neutral
 aexample = zeros(foldersize,37); %15
 for timepoint=1:37%15
     aexample(:,timepoint) = permutationmatrix(:,cuecol,timepoint);
@@ -386,7 +379,7 @@ plot([1 37],[0.25 0.25],'k'); %15
 axis([1 37 0 0.35]) %15
 
 f4 = figure;
-cuecol = 4; % target2
+cuecol = 3; % distractor2
 aexample = zeros(foldersize,37); %15
 for timepoint=1:37%15
     aexample(:,timepoint) = permutationmatrix(:,cuecol,timepoint);
@@ -400,8 +393,8 @@ axis([1 37 0 0.35])%15
 % save graphs
 cd(EEGloc);
 saveas(f1,[AnalyName,'\SVM_target1'],'jpg');   
-saveas(f2,[AnalyName,'\SVM_distractor'],'jpg');   
-saveas(f3,[AnalyName,'\SVM_neutral'],'jpg');   
-saveas(f4,[AnalyName,'\SVM_target2'],'jpg');   
+saveas(f2,[AnalyName,'\SVM_distractor1'],'jpg');   
+saveas(f3,[AnalyName,'\SVM_distractor2'],'jpg');   
+saveas(f4,[AnalyName,'\SVM_neutral'],'jpg');   
 
 

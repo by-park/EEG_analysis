@@ -17,8 +17,8 @@
 AnalyName = 'SVM';
 
 % EEG file location
-EEGloc = 'D:\EEG 파일 모음\내 실험\Ex1_n2pc_tar\뇌파데이터\pp_ica_removed\ep\'; 
-% EEGloc = 'D:\EEG 파일 모음\내 실험\Ex2_n2pc_dist\뇌파데이터\pp_ica_removed\ep\';
+% EEGloc = 'D:\EEG 파일 모음\내 실험\Ex1_n2pc_tar\뇌파데이터\pp_ica_removed\ep\'; 
+EEGloc = 'D:\EEG 파일 모음\내 실험\Ex2_n2pc_dist\뇌파데이터\pp_ica_removed\ep\';
 % EEGloc = 'D:\EEG 파일 모음\내 실험\Ex7_n2pc_tar_single\뇌파데이터\pp_ica_removed\ep\';
 
 cd(EEGloc);
@@ -66,8 +66,8 @@ nAnova = 1;
 fornnstart = [];
 
 % graph names for visualization
-graphNames = {'Distractor(blue)','Target(green)', 'Target(yellow)','Neutral(red)'};
-% graphNames = {'Target(blue)','Distractor(green)', 'Distractor(yellow)','Neutral(red)'};
+% graphNames = {'Distractor(blue)','Target(green)', 'Target(yellow)','Neutral(red)'};
+graphNames = {'Target(blue)','Distractor(green)', 'Distractor(yellow)','Neutral(red)'};
 % graphNames = {'Distractor(red)','Target(blue)', 'Target(yellow)','Neutral(green)'};
 % graphNames = {'Distractor(red)','Target(blue)', 'Target(green)','Neutral(yellow)'};
 
@@ -119,7 +119,7 @@ for file = 1:foldersize
     % 3. SVM training
     ttestmatrix = zeros(10,4,size(fornnstart_comb,3)); % 30 samples with 3 cue color at 5 time points
     
-    for iter = 1:10
+    for iter = 1:3
         
     for timepoint = 1:size(fornnstart_comb,3)
         fprintf('** Timepoint %d \n',timepoint)
@@ -317,7 +317,7 @@ for file = 1:foldersize
     end
     
     end % iteration end
-    ttestmatrix(:,:,:) = ttestmatrix(:,:,:)/10;
+    ttestmatrix(:,:,:) = ttestmatrix(:,:,:)/3;
     
     permutationmatrix = [permutationmatrix;mean(ttestmatrix, 1)];
         
@@ -325,7 +325,7 @@ end
     
 
 %% permutation test
-cd('C:\Users\BY\Documents\Github\EEG_Decoding\codes');
+cd('C:\Users\BY\Documents\Github\PersonalProejct\EEG_analysis\codes');
 
 perm_pvalue = zeros(4,size(fornnstart_comb,3));
 for timepoint = 1:size(fornnstart_comb,3)
@@ -347,55 +347,55 @@ save([AnalyName,'\permutationmatrix'],'permutationmatrix');
 
 %% graphs of accuracy
 % cue col 4
-cd('C:\Users\BY\Documents\Github\EEG_Decoding\codes');
+cd('C:\Users\BY\Documents\Github\PersonalProejct\EEG_analysis\codes');
 
 f1 = figure;
 cuecol = 2; % target 1
-aexample = zeros(foldersize,15);
-for timepoint=1:15
+aexample = zeros(foldersize,37); %15
+for timepoint=1:37%15
     aexample(:,timepoint) = permutationmatrix(:,cuecol,timepoint);
 end
 %stdshade(aexample, 0.5,'g');
 plot(mean(aexample, 1), 'g');
 hold on;
-plot([1 15],[0.25 0.25],'k');
-axis([1 15 0 0.35])
+plot([1 37],[0.25 0.25],'k'); %15
+axis([1 37 0 0.35])%15
 
 f2 = figure;
 cuecol = 1; % distractor
-aexample = zeros(foldersize,15);
-for timepoint=1:15
+aexample = zeros(foldersize,37); %15
+for timepoint=1:37%15
     aexample(:,timepoint) = permutationmatrix(:,cuecol,timepoint);
 end
 %stdshade(aexample, 0.5,'b');
 plot(mean(aexample, 1), 'b');
 hold on;
-plot([1 15],[0.25 0.25],'k');
-axis([1 15 0 0.35])
+plot([1 37],[0.25 0.25],'k'); %15
+axis([1 37 0 0.35]) %15
 
 f3 = figure;
 cuecol = 3; % neutral
-aexample = zeros(foldersize,15);
-for timepoint=1:15
+aexample = zeros(foldersize,37); %15
+for timepoint=1:37%15
     aexample(:,timepoint) = permutationmatrix(:,cuecol,timepoint);
 end
 %stdshade(aexample, 0.5,'r');
 plot(mean(aexample, 1), 'r');
 hold on;
-plot([1 15],[0.25 0.25],'k');
-axis([1 15 0 0.35])
+plot([1 37],[0.25 0.25],'k'); %15
+axis([1 37 0 0.35]) %15
 
 f4 = figure;
 cuecol = 4; % target2
-aexample = zeros(foldersize,15);
-for timepoint=1:15
+aexample = zeros(foldersize,37); %15
+for timepoint=1:37%15
     aexample(:,timepoint) = permutationmatrix(:,cuecol,timepoint);
 end
 %stdshade(aexample, 0.5,'y');
 plot(mean(aexample, 1), 'y');
 hold on;
-plot([1 15],[0.25 0.25],'k');
-axis([1 15 0 0.35])
+plot([1 37],[0.25 0.25],'k');%15
+axis([1 37 0 0.35])%15
 
 % save graphs
 cd(EEGloc);

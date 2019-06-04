@@ -17,14 +17,15 @@
 AnalyName = 'ep';
 
 % EEG file location
-EEGloc = 'D:\EEG 파일 모음\내 실험\Ex1_n2pc_tar\뇌파데이터\pp_ica_removed\'; 
-% EEGloc = 'D:\EEG 파일 모음\내 실험\Ex2_n2pc_dist\뇌파데이터\pp_ica_removed\';
+% EEGloc = 'D:\EEG 파일 모음\내 실험\Ex1_n2pc_tar\뇌파데이터\pp_ica_removed\'; 
+EEGloc = 'D:\EEG 파일 모음\내 실험\Ex2_n2pc_dist\뇌파데이터\pp_ica_removed\';
 % EEGloc = 'D:\EEG 파일 모음\내 실험\Ex7_n2pc_tar_single\뇌파데이터\pp_ica_removed\';
 
 cd(EEGloc);
 
 % behavior file location
-behavfile = 'D:\EEG 파일 모음\내 실험\Ex1_n2pc_tar\행동데이터\raw16_matlab_cueloca.xlsx';
+% behavfile = 'D:\EEG 파일 모음\내 실험\Ex1_n2pc_tar\행동데이터\raw16_matlab_cueloca.xlsx';
+behavfile = 'D:\EEG 파일 모음\내 실험\Ex2_n2pc_dist\행동데이터\raw16_matlab_cueloca.xlsx';
 
 % find Files
 runStr = '*.set';
