@@ -18,14 +18,16 @@ AnalyName = 'ep';
 
 % EEG file location
 % EEGloc = 'D:\EEG 파일 모음\내 실험\Ex1_n2pc_tar\뇌파데이터\pp_ica_removed\'; 
-EEGloc = 'D:\EEG 파일 모음\내 실험\Ex2_n2pc_dist\뇌파데이터\pp_ica_removed\';
-% EEGloc = 'D:\EEG 파일 모음\내 실험\Ex7_n2pc_tar_single\뇌파데이터\pp_ica_removed\';
+% EEGloc = 'D:\EEG 파일 모음\내 실험\Ex2_n2pc_dist\뇌파데이터\pp_ica_removed\';
+EEGloc = 'D:\EEG 파일 모음\내 실험\Ex7_n2pc_tar_single\뇌파데이터\pp_ica_removed\';
 
 cd(EEGloc);
 
 % behavior file location
 % behavfile = 'D:\EEG 파일 모음\내 실험\Ex1_n2pc_tar\행동데이터\raw16_matlab_cueloca.xlsx';
-behavfile = 'D:\EEG 파일 모음\내 실험\Ex2_n2pc_dist\행동데이터\raw16_matlab_cueloca.xlsx';
+% behavfile = 'D:\EEG 파일 모음\내 실험\Ex2_n2pc_dist\행동데이터\raw16_matlab_cueloca.xlsx';
+behavfile = 'D:\EEG 파일 모음\내 실험\Ex7_n2pc_tar_single\행동데이터\raw16_matlab_cueloca.xlsx';
+
 
 % find Files
 runStr = '*.set';
@@ -33,7 +35,7 @@ fileNames = dir(runStr);
 foldersize = size(fileNames,1);
 
 % number of trials
-trialNum = 1024;
+trialNum = 576; % exp7 %1024; % exp1, exp2
 
 % epoching range
 grange1 = -100; % -0.1
@@ -70,7 +72,8 @@ for file = 1:foldersize
     EEG = eeg_checkset( EEG );
     
     % 2-1. Epoch (-100ms baseline 500ms epoch)
-    EEG = pop_epoch( EEG, {  '11'  '12'  '13'  '14'  '21'  '22'  '23'  '24'  '91'  '92'  '93'  '94'  }, [grange1 grange2], 'newname', 'CNT file resampled pruned with ICA epochs', 'epochinfo', 'yes');
+%    EEG = pop_epoch( EEG, {  '11'  '12'  '13'  '14'  '21'  '22'  '23'  '24'  '91'  '92'  '93'  '94'  }, [grange1 grange2], 'newname', 'CNT file resampled pruned with ICA epochs', 'epochinfo', 'yes');
+    EEG = pop_epoch( EEG, {  '11'  '12'  '13'  '21'  '22'  '23'  '31'  '32'  '33'  '41'  '42'  '43'  }, [grange1 grange2], 'newname', 'CNT file resampled pruned with ICA epochs', 'epochinfo', 'yes');
     EEG = eeg_checkset( EEG );
     
     % 2-2. Remove baseline (-100 ms)

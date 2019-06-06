@@ -18,8 +18,8 @@ AnalyName = 'N2pc';
 
 % EEG file location
 % EEGloc = 'D:\EEG 파일 모음\내 실험\Ex1_n2pc_tar\뇌파데이터\pp_ica_removed\ep\'; 
-EEGloc = 'D:\EEG 파일 모음\내 실험\Ex2_n2pc_dist\뇌파데이터\pp_ica_removed\ep\';
-% EEGloc = 'D:\EEG 파일 모음\내 실험\Ex7_n2pc_tar_single\뇌파데이터\pp_ica_removed\ep\';
+% EEGloc = 'D:\EEG 파일 모음\내 실험\Ex2_n2pc_dist\뇌파데이터\pp_ica_removed\ep\';
+EEGloc = 'D:\EEG 파일 모음\내 실험\Ex7_n2pc_tar_single\뇌파데이터\pp_ica_removed\ep\';
 
 cd(EEGloc);
 
@@ -52,7 +52,7 @@ grange2 = 500; % 0.5
 grange2 = grange2 * 0.001;
 
 % manipulated conditions
-cond1 = 4; % cue type (4: ex1, ex2 / 3: ex7)
+cond1 = 3; % cue type (4: ex1, ex2 / 3: ex7)
 cond2 = 2; % ipsil/cont
 
 % for averaging
@@ -67,9 +67,10 @@ fornnstart = [];
 
 % graph names for visualization
 % graphNames = {'Distractor(blue)','Target(green)', 'Target(yellow)','Neutral(red)'};
-graphNames = {'Target(blue)','Distractor(green)', 'Distractor(yellow)','Neutral(red)'};
+% graphNames = {'Target(blue)','Distractor(green)', 'Distractor(yellow)','Neutral(red)'};
 % graphNames = {'Distractor(red)','Target(blue)', 'Target(yellow)','Neutral(green)'};
 % graphNames = {'Distractor(red)','Target(blue)', 'Target(green)','Neutral(yellow)'};
+graphNames = {'Target(red)','Distractor(green)', 'Neutral(blue)'};
 
 
 %% load behav file
@@ -98,6 +99,12 @@ for file = 1:foldersize
     for removedTrialEEG = 1: 2 : size(EEG.event,2) 
         % trigger at the trial
         trigger = EEG.event(removedTrialEEG).type;
+        % exp7 trigger
+        if (floor(trigger/10) == 1) || (floor(trigger/10) == 3)
+            continue;
+        elseif floor(trigger/10) == 4
+            trigger = trigger-30;
+        end
         
         if trigger < 90 % only for left and right electrdes        
             % plotResult_LeftElec(trigger 뒷자리수 = cue type, eeg, 앞자리수 = location)
