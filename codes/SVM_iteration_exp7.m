@@ -349,4 +349,6 @@ saveas(f1,[AnalyName,'\SVM_target1'],'jpg');
 saveas(f2,[AnalyName,'\SVM_distractor1'],'jpg');   
 saveas(f3,[AnalyName,'\SVM_neutral'],'jpg');   
 
-
+% for decoding graph in excel
+% a = std(permutationmatrix, 1); a = mean(permutationmatrix, 1);
+% a = reshape(a, [4,37]);
