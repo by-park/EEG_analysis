@@ -18,9 +18,9 @@
 AnalyName = 'N2pc';
 
 % EEG file location
-EEGloc = 'D:\EEG 파일 모음\내 실험\Ex1_n2pc_tar\뇌파데이터\pp_ica_removed\ep\'; 
+% EEGloc = 'D:\EEG 파일 모음\내 실험\Ex1_n2pc_tar\뇌파데이터\pp_ica_removed\ep\'; 
 % EEGloc = 'D:\EEG 파일 모음\내 실험\Ex2_n2pc_dist\뇌파데이터\pp_ica_removed\ep\';
-% EEGloc = 'D:\EEG 파일 모음\내 실험\Ex7_n2pc_tar_single\뇌파데이터\pp_ica_removed\ep\';
+EEGloc = 'D:\EEG 파일 모음\내 실험\Ex7_n2pc_tar_single\뇌파데이터\pp_ica_removed\ep\';
 
 cd(EEGloc);
 
@@ -53,7 +53,7 @@ grange2 = 500; % 0.5
 grange2 = grange2 * 0.001;
 
 % manipulated conditions
-cond1 = 4; % cue type (4: ex1, ex2 / 3: ex7)
+cond1 = 3; % cue type (4: ex1, ex2 / 3: ex7)
 cond2 = 2; % ipsil/cont
 
 % for averaging
@@ -63,19 +63,21 @@ Average_grand = zeros(2,round(grange2*resamplerate) + round(-1*grange1*resampler
 nGrandAverage = 0;
 nAnova = 1;
 
-% for machine learning
-fornnstart = [];
+% for topography
+fortopography = [];
 
 % graph names for visualization
-graphNames = {'Distractor(blue)','Target(green)', 'Target(yellow)','Neutral(red)'};
+% graphNames = {'Distractor(blue)','Target(green)', 'Target(yellow)','Neutral(red)'};
 % graphNames = {'Target(blue)','Distractor(green)', 'Distractor(yellow)','Neutral(red)'};
 % graphNames = {'Distractor(red)','Target(blue)', 'Target(yellow)','Neutral(green)'};
 % graphNames = {'Distractor(red)','Target(blue)', 'Target(green)','Neutral(yellow)'};
-% graphNames = {'Target(red)','Distractor(green)', 'Neutral(blue)'};
+graphNames = {'Target(red)','Distractor(green)', 'Neutral(blue)'};
 
 
 %% load behav file
 behavFile = load([EEGloc, 'epoch.mat']);
+behavFile = behavFile.behavFile;
+trialBehav = 0;
 
 %% eeglab
 eeglab;
@@ -97,16 +99,22 @@ for file = 1:foldersize
     plotResult_AllElec = zeros(cond1, round(grange2*resamplerate)-round(grange1*resamplerate));
     checkNum = zeros(cond1,cond2); % 1234 bgyr (dist, tar, tar, neu) & ipsil/cont
     
-    for removedTrialEEG = 1: 2 : size(EEG.event,2) 
+    for removedTrialEEG = 1: 2 : size(EEG.event,2)
+        
         % trigger at the trial
         trigger = EEG.event(removedTrialEEG).type;
+
+        % for topography
+        trialBehav = trialBehav + 1;
+        temp = EEG.data(:,round(baserange*resamplerate)+round(100*0.001*resamplerate)+1:round(baserange*resamplerate)+round(400*0.001*resamplerate), (removedTrialEEG+1)/2);
+        fortopography = [fortopography; temp(:)', behavFile(trialBehav,6), rem(trigger,10)]; % time point, location, cue type
         
-%         % exp7 trigger
-%         if (floor(trigger/10) == 1) || (floor(trigger/10) == 3)
-%             continue;
-%         elseif floor(trigger/10) == 4
-%             trigger = trigger-30;
-%         end
+        % exp7 trigger
+        if (floor(trigger/10) == 1) || (floor(trigger/10) == 3)
+            continue;
+        elseif floor(trigger/10) == 4
+            trigger = trigger-30;
+        end
         
         if trigger < 90 % only for left and right electrdes        
             % plotResult_LeftElec(trigger 뒷자리수 = cue type, eeg, 앞자리수 = location)
@@ -138,11 +146,7 @@ for file = 1:foldersize
             % counting grand averaging
             nGrandAverage = nGrandAverage + 1;
         
-        end
-        
-        % for machine learning
-        temp = EEG.data(:,round(baserange*resamplerate)+round(100*0.001*resamplerate)+1:round(baserange*resamplerate)+round(400*0.001*resamplerate), (removedTrialEEG+1)/2);
-        fornnstart = [fornnstart; temp(:)', rem(trigger,10)];
+        end       
     
     end
     
@@ -245,4 +249,4 @@ xlswrite(newfilename,AnovaResult);
 plots = [AnalyName,'\','N2pc_matrix',AnalyName,'.xlsx'];
 xlswrite(plots,N2pc_matrix);
 
-save([AnalyName,'\','fornnstart_',AnalyName],'fornnstart'); 
+save([AnalyName,'\','fortopography_',AnalyName],'fortopography'); 
