@@ -320,8 +320,9 @@ end
 %% permutation test
 cd('C:\Users\BY\Documents\Github\PersonalProejct\EEG_analysis\codes');
 
-perm_pvalue = zeros(4,size(fornnstart_comb,3));
-for timepoint = 1:size(fornnstart_comb,3)
+perm_pvalue = zeros(3,37);
+% perm_pvalue = zeros(4,size(fornnstart_comb,3));
+for timepoint = 1:37%size(fornnstart_comb,3)
     for cuecol = 1:4
         fprintf('one sample t-test timepoint %d cue color %d \n', timepoint, cuecol)
         % ttest
@@ -397,4 +398,8 @@ saveas(f2,[AnalyName,'\SVM_distractor1'],'jpg');
 saveas(f3,[AnalyName,'\SVM_distractor2'],'jpg');   
 saveas(f4,[AnalyName,'\SVM_neutral'],'jpg');   
 
-
+% for mean accuracy in interval for 180 ~ 240 ms
+color = 4;
+a = mean(mean(permutationmatrix(:,color,30),3),1); % 23:30
+b = std(mean(permutationmatrix(:,color,30),3))/4;
+% time point 25 = 198 ms, 30 = 238 ms

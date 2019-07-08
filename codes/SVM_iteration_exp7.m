@@ -285,10 +285,11 @@ end
 %% permutation test
 cd('C:\Users\BY\Documents\Github\PersonalProejct\EEG_analysis\codes');
 
-perm_pvalue = zeros(cond1,size(fornnstart_comb,3));
-for timepoint = 1:size(fornnstart_comb,3)
-    for cuecol = 1:cond1
-        fprintf('one sample t-test timepoint %d cue color %d \n', timepoint, cuecol)
+perm_pvalue = zeros(3,37);
+%perm_pvalue = zeros(cond1,size(fornnstart_comb,3));
+for timepoint = 1:37%size(fornnstart_comb,3)
+    for cuecol = 1:3%cond1
+        fprintf('p-value timepoint %d cue color %d \n', timepoint, cuecol) % one sample t-test
         % ttest
         % [h,p,ci,stats] = ttest(ttestmatrix(:,cuecol,timepoint),0.25,'Alpha',0.05,'Tail','right');
         % permutation test
@@ -352,3 +353,8 @@ saveas(f3,[AnalyName,'\SVM_neutral'],'jpg');
 % for decoding graph in excel
 % a = std(permutationmatrix, 1); a = mean(permutationmatrix, 1);
 % a = reshape(a, [4,37]);
+
+% for mean accuracy in interval for 180 ~ 240 ms
+color = 1;
+a = mean(mean(permutationmatrix(:,color,25),3),1); % 23:30
+b = std(mean(permutationmatrix(:,color,25),3))/4;

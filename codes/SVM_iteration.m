@@ -17,8 +17,8 @@
 AnalyName = 'SVM';
 
 % EEG file location
-% EEGloc = 'D:\EEG 파일 모음\내 실험\Ex1_n2pc_tar\뇌파데이터\pp_ica_removed\ep\'; 
-EEGloc = 'D:\EEG 파일 모음\내 실험\Ex2_n2pc_dist\뇌파데이터\pp_ica_removed\ep\';
+EEGloc = 'D:\EEG 파일 모음\내 실험\Ex1_n2pc_tar\뇌파데이터\pp_ica_removed\ep\'; 
+% EEGloc = 'D:\EEG 파일 모음\내 실험\Ex2_n2pc_dist\뇌파데이터\pp_ica_removed\ep\';
 % EEGloc = 'D:\EEG 파일 모음\내 실험\Ex7_n2pc_tar_single\뇌파데이터\pp_ica_removed\ep\';
 
 cd(EEGloc);
@@ -66,8 +66,8 @@ nAnova = 1;
 fornnstart = [];
 
 % graph names for visualization
-% graphNames = {'Distractor(blue)','Target(green)', 'Target(yellow)','Neutral(red)'};
-graphNames = {'Target(blue)','Distractor(green)', 'Distractor(yellow)','Neutral(red)'};
+graphNames = {'Distractor(blue)','Target(green)', 'Target(yellow)','Neutral(red)'};
+% graphNames = {'Target(blue)','Distractor(green)', 'Distractor(yellow)','Neutral(red)'};
 % graphNames = {'Distractor(red)','Target(blue)', 'Target(yellow)','Neutral(green)'};
 % graphNames = {'Distractor(red)','Target(blue)', 'Target(green)','Neutral(yellow)'};
 
@@ -327,8 +327,9 @@ end
 %% permutation test
 cd('C:\Users\BY\Documents\Github\PersonalProejct\EEG_analysis\codes');
 
-perm_pvalue = zeros(4,size(fornnstart_comb,3));
-for timepoint = 1:size(fornnstart_comb,3)
+perm_pvalue = zeros(3,37);
+% perm_pvalue = zeros(4,size(fornnstart_comb,3));
+for timepoint = 1:37 %size(fornnstart_comb,3)
     for cuecol = 1:4
         fprintf('one sample t-test timepoint %d cue color %d \n', timepoint, cuecol)
         % ttest
@@ -404,4 +405,8 @@ saveas(f2,[AnalyName,'\SVM_distractor'],'jpg');
 saveas(f3,[AnalyName,'\SVM_neutral'],'jpg');   
 saveas(f4,[AnalyName,'\SVM_target2'],'jpg');   
 
-
+% for mean accuracy in interval for 180 ~ 240 ms
+color = 3; % 1 dist, 2 4 target 3 neutral
+a = mean(mean(permutationmatrix(:,color,25),3),1); % 23:30
+b = std(mean(permutationmatrix(:,color,25),3))/4;
+% time point 25 = 198 ms, 30 = 238 ms
